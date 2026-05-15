@@ -3,65 +3,84 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Shopper test ecommerce storefront with products, cart, and demo checkout." />
-    <title>Shopper | Test Storefront</title>
+    <meta name="description" content="Shopper is a polished test ecommerce storefront with products, cart, product details, and demo ordering." />
+    <title>Shopper | Modern Test Store</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="announcement">Free demo delivery on every test order · Built for small shops, local brands, and quick launches</div>
+
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Shopper home">
         <span class="brand-mark">S</span>
         <span>Shopper</span>
       </a>
       <nav class="main-nav" aria-label="Primary navigation">
-        <a href="#products">Products</a>
-        <a href="#featured">Featured</a>
-        <a href="#checkout">Order</a>
+        <a href="#products">Shop</a>
+        <a href="#collections">Collections</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#order">Order</a>
       </nav>
-      <button class="cart-button" id="openCart" type="button" aria-label="Open cart">
-        <span>Cart</span>
-        <strong id="cartCount">0</strong>
-      </button>
+      <div class="header-actions">
+        <label class="search-box" aria-label="Search products">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="Search products" />
+        </label>
+        <button class="cart-button" id="openCart" type="button" aria-label="Open cart">
+          Cart <strong id="cartCount">0</strong>
+        </button>
+      </div>
     </header>
 
     <main id="top">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Test ecommerce store</p>
-          <h1>Simple products, smooth cart, easy demo orders.</h1>
-          <p>Shopper is a lightweight storefront for testing product browsing, cart actions, and a fake checkout flow before building the real business.</p>
+          <p class="eyebrow">Simple shop template</p>
+          <h1>Launch a clean online shop for any small brand.</h1>
+          <p>Browse products, open item details, add to cart, and place a demo order. This is the reusable starter store for clients who sell through Instagram, WhatsApp, or local delivery.</p>
           <div class="hero-actions">
-            <a class="primary-link" href="#products">Shop products</a>
-            <a class="secondary-link" href="#checkout">Demo checkout</a>
+            <a class="primary-link" href="#products">Shop the catalog</a>
+            <button class="secondary-link button-reset" id="heroCheckout" type="button">Try checkout</button>
+          </div>
+          <div class="trust-row" aria-label="Store benefits">
+            <span>Fast setup</span>
+            <span>No payment required</span>
+            <span>Mobile ready</span>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Store summary">
-          <span>Today only</span>
-          <strong>Free test shipping on every demo order</strong>
-          <p>No payments are collected. This is only a starter ecommerce prototype.</p>
-        </aside>
+        <div class="hero-product" aria-label="Featured product">
+          <span class="hero-pill">Best seller</span>
+          <div class="hero-product-art">🎧</div>
+          <div class="hero-product-info">
+            <span>Pulse Wireless Headphones</span>
+            <strong>$79.00</strong>
+          </div>
+        </div>
       </section>
 
-      <section class="section" id="featured">
-        <div class="section-heading">
-          <p class="eyebrow">Featured</p>
-          <h2>Built like a clean mini Shopify-style store.</h2>
+      <section class="section collections" id="collections">
+        <div class="section-heading row-heading">
+          <div>
+            <p class="eyebrow">Collections</p>
+            <h2>Designed for small catalogs that need to sell clearly.</h2>
+          </div>
+          <p class="section-note">Use this template for clothing, electronics, beauty, home goods, snacks, handmade items, and local stores.</p>
         </div>
-        <div class="feature-strip">
-          <div><strong>6</strong><span>demo products</span></div>
-          <div><strong>0</strong><span>real payments</span></div>
-          <div><strong>1</strong><span>simple order form</span></div>
+        <div class="collection-grid">
+          <button class="collection-card" type="button" data-filter="tech"><span>Tech</span><strong>Clean gadgets and desk items</strong></button>
+          <button class="collection-card" type="button" data-filter="style"><span>Style</span><strong>Simple clothing and daily carry</strong></button>
+          <button class="collection-card" type="button" data-filter="home"><span>Home</span><strong>Useful things for everyday life</strong></button>
         </div>
       </section>
 
       <section class="section products-section" id="products">
         <div class="section-heading row-heading">
           <div>
-            <p class="eyebrow">Products</p>
-            <h2>Start with a small test catalog.</h2>
+            <p class="eyebrow">Shop products</p>
+            <h2>Featured products</h2>
           </div>
           <div class="filter-tabs" aria-label="Product filters">
             <button class="filter active" type="button" data-filter="all">All</button>
@@ -73,11 +92,23 @@
         <div class="product-grid" id="productGrid"></div>
       </section>
 
-      <section class="checkout-band" id="checkout">
+      <section class="section how-section" id="how-it-works">
+        <div class="section-heading">
+          <p class="eyebrow">For clients</p>
+          <h2>A white-label shop you can reuse for real businesses.</h2>
+        </div>
+        <div class="steps-grid">
+          <article><span>01</span><h3>Add products</h3><p>Change product names, prices, descriptions, and images from one product list.</p></article>
+          <article><span>02</span><h3>Collect orders</h3><p>Use the demo order form now, then connect WhatsApp, email, or payments later.</p></article>
+          <article><span>03</span><h3>Deploy updates</h3><p>Every merged PR can deploy automatically through Cloudflare.</p></article>
+        </div>
+      </section>
+
+      <section class="order-band" id="order">
         <div>
           <p class="eyebrow">Order test</p>
-          <h2>Try the cart, then place a demo order.</h2>
-          <p>Add a few products, review the cart, and submit the order form. The site will show a confirmation without charging anything.</p>
+          <h2>Cart, product details, and checkout are ready to test.</h2>
+          <p>Add a product, open the cart, and place a demo order. No money is collected.</p>
         </div>
         <button class="primary-link button-reset" id="checkoutButton" type="button">Open checkout</button>
       </section>
@@ -102,27 +133,20 @@
       </div>
     </aside>
 
+    <dialog class="product-modal" id="productModal">
+      <div class="product-detail" id="productDetail"></div>
+    </dialog>
+
     <dialog class="order-modal" id="orderModal">
       <form method="dialog" class="order-form" id="orderForm">
         <button class="icon-button modal-close" value="cancel" aria-label="Close order form">×</button>
         <p class="eyebrow">Demo order</p>
-        <h2>Where should Shopper send it?</h2>
-        <label>
-          Full name
-          <input name="name" type="text" placeholder="Ahmad Ramazan" required />
-        </label>
-        <label>
-          Email
-          <input name="email" type="email" placeholder="you@example.com" required />
-        </label>
-        <label>
-          Address
-          <textarea name="address" rows="3" placeholder="Street, city, country" required></textarea>
-        </label>
-        <div class="modal-total">
-          <span>Demo total</span>
-          <strong id="modalTotal">$0.00</strong>
-        </div>
+        <h2>Complete your test order</h2>
+        <div class="order-note">This form is a prototype. For real clients, we can route orders to WhatsApp, email, or a backend later.</div>
+        <label>Full name<input name="name" type="text" placeholder="Ahmad Ramazan" required /></label>
+        <label>Email<input name="email" type="email" placeholder="you@example.com" required /></label>
+        <label>Address<textarea name="address" rows="3" placeholder="Street, city, country" required></textarea></label>
+        <div class="modal-total"><span>Demo total</span><strong id="modalTotal">$0.00</strong></div>
         <button class="checkout-submit" type="submit">Place demo order</button>
       </form>
     </dialog>

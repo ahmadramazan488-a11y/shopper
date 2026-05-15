@@ -4,54 +4,66 @@ const products = [
     name: 'Pulse Wireless Headphones',
     category: 'tech',
     price: 79,
-    emoji: '🎧',
+    badge: 'Best seller',
+    visual: 'headphones',
     tone: '#ffe1d3',
-    description: 'Soft ear cushions, clean audio, and all-day battery for studying, gaming, or music.'
+    description: 'Soft ear cushions, clean audio, and all-day battery for studying, gaming, or music.',
+    detail: 'A dependable everyday headset with easy controls, a fold-flat shape, and a balanced sound profile for work, travel, and entertainment.'
   },
   {
     id: 'daily-backpack',
     name: 'Daily Carry Backpack',
     category: 'style',
     price: 52,
-    emoji: '🎒',
+    badge: 'Everyday',
+    visual: 'backpack',
     tone: '#dcfce7',
-    description: 'A simple everyday bag with laptop space, side pockets, and a clean streetwear look.'
+    description: 'A simple everyday bag with laptop space, side pockets, and a clean streetwear look.',
+    detail: 'Built for school, work, and short trips with a padded laptop pocket, two outer bottle pockets, and a low-profile design.'
   },
   {
     id: 'desk-lamp',
     name: 'Glow Desk Lamp',
     category: 'home',
     price: 34,
-    emoji: '💡',
+    badge: 'Warm light',
+    visual: 'lamp',
     tone: '#fef3c7',
-    description: 'Warm light, small footprint, and three brightness modes for work or late-night browsing.'
+    description: 'Warm light, small footprint, and three brightness modes for work or late-night browsing.',
+    detail: 'A compact desk light with soft diffusion, tap controls, and enough brightness range for reading, calls, and focused work.'
   },
   {
     id: 'smart-bottle',
     name: 'Hydro Smart Bottle',
     category: 'home',
     price: 28,
-    emoji: '💧',
+    badge: 'Daily use',
+    visual: 'bottle',
     tone: '#dbeafe',
-    description: 'A clean stainless bottle made for daily water goals, gym sessions, and travel.'
+    description: 'A clean stainless bottle made for daily water goals, gym sessions, and travel.',
+    detail: 'Double-wall insulation keeps drinks cold, while the slim shape fits most bags, desks, and car cup holders.'
   },
   {
     id: 'mini-keyboard',
     name: 'Mini Mechanical Keyboard',
     category: 'tech',
     price: 96,
-    emoji: '⌨️',
+    badge: 'Premium',
+    visual: 'keyboard',
     tone: '#ede9fe',
-    description: 'Compact keys, satisfying clicks, and a desk-friendly layout for coding or gaming.'
+    description: 'Compact keys, satisfying clicks, and a desk-friendly layout for coding or gaming.',
+    detail: 'A tidy mechanical board with responsive switches, a compact footprint, and a clean layout for focused desk setups.'
   },
   {
     id: 'canvas-hoodie',
     name: 'Canvas Comfort Hoodie',
     category: 'style',
     price: 44,
-    emoji: '🧥',
+    badge: 'Soft feel',
+    visual: 'hoodie',
     tone: '#fee2e2',
-    description: 'A soft neutral hoodie for everyday outfits, relaxed weekends, and cozy evenings.'
+    description: 'A soft neutral hoodie for everyday outfits, relaxed weekends, and cozy evenings.',
+    detail: 'A mid-weight pullover with a relaxed fit, soft inner fleece, and easy styling for everyday wear.'
   }
 ];
 
@@ -64,7 +76,13 @@ const cartTotal = document.getElementById('cartTotal');
 const modalTotal = document.getElementById('modalTotal');
 const orderModal = document.getElementById('orderModal');
 const orderForm = document.getElementById('orderForm');
+const productModal = document.getElementById('productModal');
+const productDetail = document.getElementById('productDetail');
+const searchInput = document.getElementById('searchInput');
 const toast = document.getElementById('toast');
+
+let activeFilter = 'all';
+let searchTerm = '';
 let cart = JSON.parse(localStorage.getItem('shopper-cart') || '{}');
 
 function money(value) {
@@ -75,9 +93,13 @@ function saveCart() {
   localStorage.setItem('shopper-cart', JSON.stringify(cart));
 }
 
+function getProduct(id) {
+  return products.find((item) => item.id === id);
+}
+
 function getCartEntries() {
   return Object.entries(cart)
-    .map(([id, quantity]) => ({ product: products.find((item) => item.id === id), quantity }))
+    .map(([id, quantity]) => ({ product: getProduct(id), quantity }))
     .filter((entry) => entry.product && entry.quantity > 0);
 }
 
@@ -92,19 +114,58 @@ function showToast(message) {
   showToast.timer = window.setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
-function renderProducts(filter = 'all') {
-  const visibleProducts = filter === 'all' ? products : products.filter((product) => product.category === filter);
+function productVisual(product, size = 'card') {
+  return `
+    <div class="product-visual product-visual-${size}" style="--tone:${product.tone}">
+      <span class="visual-shape visual-${product.visual}"></span>
+    </div>
+  `;
+}
+
+function filteredProducts() {
+  return products.filter((product) => {
+    const matchesCategory = activeFilter === 'all' || product.category === activeFilter;
+    const matchesSearch = !searchTerm || `${product.name} ${product.category} ${product.description}`.toLowerCase().includes(searchTerm);
+    return matchesCategory && matchesSearch;
+  });
+}
+
+function setActiveFilter(filter) {
+  activeFilter = filter;
+  document.querySelectorAll('[data-filter]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.filter === filter);
+  });
+  renderProducts();
+  document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderProducts() {
+  const visibleProducts = filteredProducts();
+
+  if (!visibleProducts.length) {
+    productGrid.innerHTML = '<div class="empty-results">No products match this search. Try another word or clear the filters.</div>';
+    return;
+  }
+
   productGrid.innerHTML = visibleProducts.map((product) => `
     <article class="product-card">
-      <div class="product-art" style="--tone:${product.tone}">${product.emoji}</div>
+      <button class="product-open" type="button" data-open-product="${product.id}" aria-label="Open ${product.name}">
+        ${productVisual(product)}
+      </button>
       <div class="product-info">
-        <span class="category">${product.category}</span>
+        <div class="product-meta">
+          <span class="category">${product.category}</span>
+          <span class="product-badge">${product.badge}</span>
+        </div>
         <div class="product-top">
           <h3>${product.name}</h3>
           <span class="price">${money(product.price)}</span>
         </div>
         <p>${product.description}</p>
-        <button class="add-button" type="button" data-add="${product.id}">Add to cart</button>
+        <div class="product-actions">
+          <button class="details-button" type="button" data-open-product="${product.id}">View details</button>
+          <button class="add-button" type="button" data-add="${product.id}">Add to cart</button>
+        </div>
       </div>
     </article>
   `).join('');
@@ -126,14 +187,14 @@ function renderCart() {
 
   cartItems.innerHTML = entries.map(({ product, quantity }) => `
     <div class="cart-item">
-      <div class="cart-thumb">${product.emoji}</div>
+      ${productVisual(product, 'thumb')}
       <div>
         <h3>${product.name}</h3>
         <p>${money(product.price)} each</p>
         <button class="remove-button" type="button" data-remove="${product.id}">Remove</button>
       </div>
       <div class="qty-controls" aria-label="Quantity controls for ${product.name}">
-        <button type="button" data-decrease="${product.id}">−</button>
+        <button type="button" data-decrease="${product.id}">-</button>
         <strong>${quantity}</strong>
         <button type="button" data-increase="${product.id}">+</button>
       </div>
@@ -142,10 +203,11 @@ function renderCart() {
 }
 
 function addToCart(id) {
+  const product = getProduct(id);
+  if (!product) return;
   cart[id] = (cart[id] || 0) + 1;
   saveCart();
   renderCart();
-  const product = products.find((item) => item.id === id);
   showToast(`${product.name} added to cart`);
 }
 
@@ -166,6 +228,39 @@ function closeCart() {
   cartDrawer.setAttribute('aria-hidden', 'true');
 }
 
+function openProduct(id) {
+  const product = getProduct(id);
+  if (!product) return;
+
+  productDetail.innerHTML = `
+    <button class="icon-button modal-close" type="button" data-close-product aria-label="Close product details">&times;</button>
+    <div class="detail-media">
+      <span class="hero-pill">${product.badge}</span>
+      ${productVisual(product, 'detail')}
+    </div>
+    <div class="detail-copy">
+      <span class="category">${product.category}</span>
+      <h2>${product.name}</h2>
+      <strong class="detail-price">${money(product.price)}</strong>
+      <p>${product.detail}</p>
+      <ul>
+        <li>Ready for demo ordering</li>
+        <li>Free test shipping</li>
+        <li>Easy to replace with real product photos</li>
+      </ul>
+      <div class="detail-actions">
+        <button class="add-button" type="button" data-add="${product.id}" data-close-after-add>Add to cart</button>
+        <button class="secondary-link button-reset" type="button" data-close-product>Keep shopping</button>
+      </div>
+    </div>
+  `;
+  productModal.showModal();
+}
+
+function closeProduct() {
+  if (productModal.open) productModal.close();
+}
+
 function openCheckout() {
   if (!getCartEntries().length) {
     openCart();
@@ -180,9 +275,19 @@ document.getElementById('openCart').addEventListener('click', openCart);
 document.getElementById('closeCart').addEventListener('click', closeCart);
 document.getElementById('checkoutButton').addEventListener('click', openCheckout);
 document.getElementById('drawerCheckout').addEventListener('click', openCheckout);
+document.getElementById('heroCheckout').addEventListener('click', openCheckout);
 
 cartDrawer.addEventListener('click', (event) => {
   if (event.target === cartDrawer) closeCart();
+});
+
+productModal.addEventListener('click', (event) => {
+  if (event.target === productModal) closeProduct();
+});
+
+searchInput.addEventListener('input', (event) => {
+  searchTerm = event.target.value.trim().toLowerCase();
+  renderProducts();
 });
 
 document.addEventListener('click', (event) => {
@@ -190,7 +295,13 @@ document.addEventListener('click', (event) => {
   const increaseId = event.target.dataset.increase;
   const decreaseId = event.target.dataset.decrease;
   const removeId = event.target.dataset.remove;
-  if (addId) addToCart(addId);
+  const openProductId = event.target.dataset.openProduct;
+
+  if (openProductId) openProduct(openProductId);
+  if (addId) {
+    addToCart(addId);
+    if (event.target.dataset.closeAfterAdd !== undefined) closeProduct();
+  }
   if (increaseId) changeQuantity(increaseId, 1);
   if (decreaseId) changeQuantity(decreaseId, -1);
   if (removeId) {
@@ -198,14 +309,15 @@ document.addEventListener('click', (event) => {
     saveCart();
     renderCart();
   }
+  if (event.target.dataset.closeProduct !== undefined) closeProduct();
 });
 
 document.querySelectorAll('.filter').forEach((button) => {
-  button.addEventListener('click', () => {
-    document.querySelectorAll('.filter').forEach((filter) => filter.classList.remove('active'));
-    button.classList.add('active');
-    renderProducts(button.dataset.filter);
-  });
+  button.addEventListener('click', () => setActiveFilter(button.dataset.filter));
+});
+
+document.querySelectorAll('.collection-card').forEach((button) => {
+  button.addEventListener('click', () => setActiveFilter(button.dataset.filter));
 });
 
 orderForm.addEventListener('submit', (event) => {
