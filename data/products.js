@@ -1,0 +1,80 @@
+window.BAYAD_PRODUCTS = [
+  {
+    id: 'fish-rizzo',
+    name: 'Fish with Rizzo',
+    category: 'specials',
+    price: 14,
+    badge: 'Bayad special',
+    visual: 'grill',
+    tone: '#ffe1d3',
+    image: 'assets/fish-rizzo.svg',
+    imageAlt: 'Fish with yellow rizzo from Bayad Pizza',
+    description: 'Tender fish served with yellow rizzo, sauce, lemon, and vegetables.',
+    detail: 'Bayad Pizza special fish with rizzo: tender fish, yellow rice, warm sauce, lemon, vegetables, and a filling restaurant-style portion.'
+  },
+  {
+    id: 'chicken-shawarma',
+    name: 'Chicken Shawarma Wrap',
+    category: 'mains',
+    price: 6,
+    badge: 'Popular',
+    visual: 'wrap',
+    tone: '#fef3c7',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Shawarma_Sandwich.jpg?width=900',
+    imageAlt: 'Shawarma sandwich wrap on a plate',
+    description: 'Juicy chicken shawarma wrapped with garlic sauce, pickles, and fries.',
+    detail: 'Thin-sliced chicken shawarma rolled in soft bread with garlic sauce, pickles, crispy fries, and a lightly toasted finish.'
+  },
+  {
+    id: 'crispy-burger',
+    name: 'Crispy Chicken Burger',
+    category: 'mains',
+    price: 8,
+    badge: 'Crunchy',
+    visual: 'burger',
+    tone: '#fee2e2',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Fried_chicken_burger_.jpg?width=900',
+    imageAlt: 'Fried chicken burger with lettuce and sauce',
+    description: 'Crispy chicken fillet, lettuce, cheese, and house burger sauce.',
+    detail: 'A golden crispy chicken burger layered with cheese, lettuce, tomato, pickles, and our creamy house sauce.'
+  },
+  {
+    id: 'margherita-pizza',
+    name: 'Margherita Pizza',
+    category: 'pizza',
+    price: 10,
+    badge: 'Oven baked',
+    visual: 'pizza',
+    tone: '#dcfce7',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza_Margherita_01.jpg?width=900',
+    imageAlt: 'Margherita pizza with cheese, tomato, and basil',
+    description: 'Classic pizza with tomato sauce, mozzarella, basil, and olive oil.',
+    detail: 'A simple oven-baked pizza with rich tomato sauce, melted mozzarella, fresh basil, and a crisp golden crust.'
+  },
+  {
+    id: 'pepperoni-pizza',
+    name: 'Pepperoni Pizza',
+    category: 'pizza',
+    price: 12,
+    badge: 'Hot favorite',
+    visual: 'pizza',
+    tone: '#fde68a',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pepperoni_pizza.jpg?width=900',
+    imageAlt: 'Pepperoni pizza with melted cheese',
+    description: 'Mozzarella pizza topped with pepperoni and a rich tomato base.',
+    detail: 'A warm pepperoni pizza with bubbling mozzarella, savory pepperoni slices, tomato sauce, and a crisp crust.'
+  },
+  {
+    id: 'lemon-mint',
+    name: 'Lemon Mint Juice',
+    category: 'drinks',
+    price: 4,
+    badge: 'Fresh',
+    visual: 'drink',
+    tone: '#dbeafe',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lemon_%26_Mint.jpg?width=900',
+    imageAlt: 'Fresh lemon and mint juice',
+    description: 'Fresh lemon, mint, ice, and a bright sweet finish.',
+    detail: 'A cold lemon mint drink made fresh with crushed ice, bright citrus, mint leaves, and balanced sweetness.'
+  }
+];
