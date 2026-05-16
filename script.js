@@ -7,8 +7,8 @@ const products = [
     badge: 'Bayad special',
     visual: 'grill',
     tone: '#ffe1d3',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Yellow_rice_full_of_fish_%2819827184571%29.jpg/960px-Yellow_rice_full_of_fish_%2819827184571%29.jpg',
-    imageAlt: 'Fish served with yellow rice',
+    image: 'assets/fish-rizzo.jpg',
+    imageAlt: 'Fish with yellow rizzo from Bayad Pizza',
     description: 'Tender fish served with yellow rizzo, sauce, lemon, and vegetables.',
     detail: 'Bayad Pizza special fish with rizzo: tender fish, yellow rice, warm sauce, lemon, vegetables, and a filling restaurant-style portion.'
   },
