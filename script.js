@@ -7,6 +7,8 @@ const products = [
     badge: 'Chef special',
     visual: 'grill',
     tone: '#ffe1d3',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Arabic_MixedGrill.JPG?width=900',
+    imageAlt: 'Arabic mixed grill plate with rice and sides',
     description: 'Charcoal grilled kebab, chicken, rice, salad, and warm bread.',
     detail: 'A generous mixed grill plate with seasoned kebab, tender chicken pieces, fluffy rice, fresh salad, pickles, and house sauce.'
   },
@@ -18,6 +20,8 @@ const products = [
     badge: 'Popular',
     visual: 'wrap',
     tone: '#fef3c7',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Shawarma_Sandwich.jpg?width=900',
+    imageAlt: 'Shawarma sandwich wrap on a plate',
     description: 'Juicy chicken shawarma wrapped with garlic sauce, pickles, and fries.',
     detail: 'Thin-sliced chicken shawarma rolled in soft bread with garlic sauce, pickles, crispy fries, and a lightly toasted finish.'
   },
@@ -29,6 +33,8 @@ const products = [
     badge: 'Crunchy',
     visual: 'burger',
     tone: '#fee2e2',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Fried_chicken_burger_.jpg?width=900',
+    imageAlt: 'Fried chicken burger with lettuce and sauce',
     description: 'Crispy chicken fillet, lettuce, cheese, and house burger sauce.',
     detail: 'A golden crispy chicken burger layered with cheese, lettuce, tomato, pickles, and our creamy house sauce.'
   },
@@ -40,6 +46,8 @@ const products = [
     badge: 'Oven baked',
     visual: 'pizza',
     tone: '#dcfce7',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza_Margherita_01.jpg?width=900',
+    imageAlt: 'Margherita pizza with cheese, tomato, and basil',
     description: 'Classic pizza with tomato sauce, mozzarella, basil, and olive oil.',
     detail: 'A simple oven-baked pizza with rich tomato sauce, melted mozzarella, fresh basil, and a crisp golden crust.'
   },
@@ -51,6 +59,8 @@ const products = [
     badge: 'Hot favorite',
     visual: 'pizza',
     tone: '#fde68a',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pepperoni_pizza.jpg?width=900',
+    imageAlt: 'Pepperoni pizza with melted cheese',
     description: 'Mozzarella pizza topped with pepperoni and a rich tomato base.',
     detail: 'A warm pepperoni pizza with bubbling mozzarella, savory pepperoni slices, tomato sauce, and a crisp crust.'
   },
@@ -62,6 +72,8 @@ const products = [
     badge: 'Fresh',
     visual: 'drink',
     tone: '#dbeafe',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lemon_%26_Mint.jpg?width=900',
+    imageAlt: 'Fresh lemon and mint juice',
     description: 'Fresh lemon, mint, ice, and a bright sweet finish.',
     detail: 'A cold lemon mint drink made fresh with crushed ice, bright citrus, mint leaves, and balanced sweetness.'
   }
@@ -80,6 +92,9 @@ const productModal = document.getElementById('productModal');
 const productDetail = document.getElementById('productDetail');
 const searchInput = document.getElementById('searchInput');
 const toast = document.getElementById('toast');
+const heroProductArt = document.getElementById('heroProductArt');
+const heroProductName = document.getElementById('heroProductName');
+const heroProductPrice = document.getElementById('heroProductPrice');
 
 let activeFilter = 'all';
 let searchTerm = '';
@@ -115,6 +130,14 @@ function showToast(message) {
 }
 
 function productVisual(product, size = 'card') {
+  if (product.image) {
+    return `
+      <div class="product-visual product-visual-${size}" style="--tone:${product.tone}">
+        <img src="${product.image}" alt="${product.imageAlt}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+      </div>
+    `;
+  }
+
   return `
     <div class="product-visual product-visual-${size}" style="--tone:${product.tone}">
       <span class="visual-shape visual-${product.visual}"></span>
@@ -137,6 +160,13 @@ function setActiveFilter(filter) {
   });
   renderProducts();
   document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderHero() {
+  const featured = products[0];
+  heroProductArt.innerHTML = productVisual(featured, 'hero');
+  heroProductName.textContent = featured.name;
+  heroProductPrice.textContent = money(featured.price);
 }
 
 function renderProducts() {
@@ -332,5 +362,6 @@ orderForm.addEventListener('submit', (event) => {
   showToast(`Thanks ${name}! Your demo restaurant order was placed.`);
 });
 
+renderHero();
 renderProducts();
 renderCart();
