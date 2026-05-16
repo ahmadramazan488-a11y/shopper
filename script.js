@@ -1,83 +1,8 @@
-const products = [
-  {
-    id: 'fish-rizzo',
-    name: 'Fish with Rizzo',
-    category: 'specials',
-    price: 14,
-    badge: 'Bayad special',
-    visual: 'grill',
-    tone: '#ffe1d3',
-    image: 'assets/fish-rizzo.svg',
-    imageAlt: 'Fish with yellow rizzo from Bayad Pizza',
-    description: 'Tender fish served with yellow rizzo, sauce, lemon, and vegetables.',
-    detail: 'Bayad Pizza special fish with rizzo: tender fish, yellow rice, warm sauce, lemon, vegetables, and a filling restaurant-style portion.'
-  },
-  {
-    id: 'chicken-shawarma',
-    name: 'Chicken Shawarma Wrap',
-    category: 'mains',
-    price: 6,
-    badge: 'Popular',
-    visual: 'wrap',
-    tone: '#fef3c7',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Shawarma_Sandwich.jpg?width=900',
-    imageAlt: 'Shawarma sandwich wrap on a plate',
-    description: 'Juicy chicken shawarma wrapped with garlic sauce, pickles, and fries.',
-    detail: 'Thin-sliced chicken shawarma rolled in soft bread with garlic sauce, pickles, crispy fries, and a lightly toasted finish.'
-  },
-  {
-    id: 'crispy-burger',
-    name: 'Crispy Chicken Burger',
-    category: 'mains',
-    price: 8,
-    badge: 'Crunchy',
-    visual: 'burger',
-    tone: '#fee2e2',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Fried_chicken_burger_.jpg?width=900',
-    imageAlt: 'Fried chicken burger with lettuce and sauce',
-    description: 'Crispy chicken fillet, lettuce, cheese, and house burger sauce.',
-    detail: 'A golden crispy chicken burger layered with cheese, lettuce, tomato, pickles, and our creamy house sauce.'
-  },
-  {
-    id: 'margherita-pizza',
-    name: 'Margherita Pizza',
-    category: 'pizza',
-    price: 10,
-    badge: 'Oven baked',
-    visual: 'pizza',
-    tone: '#dcfce7',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pizza_Margherita_01.jpg?width=900',
-    imageAlt: 'Margherita pizza with cheese, tomato, and basil',
-    description: 'Classic pizza with tomato sauce, mozzarella, basil, and olive oil.',
-    detail: 'A simple oven-baked pizza with rich tomato sauce, melted mozzarella, fresh basil, and a crisp golden crust.'
-  },
-  {
-    id: 'pepperoni-pizza',
-    name: 'Pepperoni Pizza',
-    category: 'pizza',
-    price: 12,
-    badge: 'Hot favorite',
-    visual: 'pizza',
-    tone: '#fde68a',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pepperoni_pizza.jpg?width=900',
-    imageAlt: 'Pepperoni pizza with melted cheese',
-    description: 'Mozzarella pizza topped with pepperoni and a rich tomato base.',
-    detail: 'A warm pepperoni pizza with bubbling mozzarella, savory pepperoni slices, tomato sauce, and a crisp crust.'
-  },
-  {
-    id: 'lemon-mint',
-    name: 'Lemon Mint Juice',
-    category: 'drinks',
-    price: 4,
-    badge: 'Fresh',
-    visual: 'drink',
-    tone: '#dbeafe',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lemon_%26_Mint.jpg?width=900',
-    imageAlt: 'Fresh lemon and mint juice',
-    description: 'Fresh lemon, mint, ice, and a bright sweet finish.',
-    detail: 'A cold lemon mint drink made fresh with crushed ice, bright citrus, mint leaves, and balanced sweetness.'
-  }
-];
+const products = Array.isArray(window.BAYAD_PRODUCTS)
+  ? window.BAYAD_PRODUCTS.map((product) => ({ ...product }))
+  : [];
+const translations = window.BAYAD_TRANSLATIONS || {};
+const language = document.documentElement.lang || 'en';
 
 const productGrid = document.getElementById('productGrid');
 const cartCount = document.getElementById('cartCount');
@@ -98,6 +23,10 @@ const heroProductPrice = document.getElementById('heroProductPrice');
 
 let searchTerm = '';
 let cart = JSON.parse(localStorage.getItem('restaurant-cart') || '{}');
+
+function t(key) {
+  return translations[language]?.[key] || translations.en?.[key] || key;
+}
 
 function money(value) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
@@ -152,6 +81,7 @@ function filteredProducts() {
 
 function renderHero() {
   const featured = products[0];
+  if (!featured) return;
   heroProductArt.innerHTML = productVisual(featured, 'hero');
   heroProductName.textContent = featured.name;
   heroProductPrice.textContent = money(featured.price);
@@ -161,7 +91,7 @@ function renderProducts() {
   const visibleProducts = filteredProducts();
 
   if (!visibleProducts.length) {
-    productGrid.innerHTML = '<div class="empty-results">No dishes match this search. Try another word.</div>';
+    productGrid.innerHTML = `<div class="empty-results">${t('emptyResults')}</div>`;
     return;
   }
 
@@ -180,8 +110,8 @@ function renderProducts() {
         </div>
         <p>${product.description}</p>
         <div class="product-actions">
-          <button class="details-button" type="button" data-open-product="${product.id}">View details</button>
-          <button class="add-button" type="button" data-add="${product.id}">Add to order</button>
+          <button class="details-button" type="button" data-open-product="${product.id}">${t('viewDetails')}</button>
+          <button class="add-button" type="button" data-add="${product.id}">${t('addToOrder')}</button>
         </div>
       </div>
     </article>
@@ -198,7 +128,7 @@ function renderCart() {
   modalTotal.textContent = money(subtotal);
 
   if (!entries.length) {
-    cartItems.innerHTML = '<div class="empty-cart">Your order is empty. Add a dish to start.</div>';
+    cartItems.innerHTML = `<div class="empty-cart">${t('emptyCart')}</div>`;
     return;
   }
 
@@ -207,10 +137,10 @@ function renderCart() {
       ${productVisual(product, 'thumb')}
       <div>
         <h3>${product.name}</h3>
-        <p>${money(product.price)} each</p>
-        <button class="remove-button" type="button" data-remove="${product.id}">Remove</button>
+        <p>${money(product.price)} ${t('each')}</p>
+        <button class="remove-button" type="button" data-remove="${product.id}">${t('remove')}</button>
       </div>
-      <div class="qty-controls" aria-label="Quantity controls for ${product.name}">
+      <div class="qty-controls" aria-label="${t('quantityControlsFor')} ${product.name}">
         <button type="button" data-decrease="${product.id}">-</button>
         <strong>${quantity}</strong>
         <button type="button" data-increase="${product.id}">+</button>
@@ -225,7 +155,7 @@ function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
   saveCart();
   renderCart();
-  showToast(`${product.name} added to order`);
+  showToast(`${product.name} ${t('addedToOrder')}`);
 }
 
 function changeQuantity(id, amount) {
@@ -250,7 +180,7 @@ function openProduct(id) {
   if (!product) return;
 
   productDetail.innerHTML = `
-    <button class="icon-button modal-close" type="button" data-close-product aria-label="Close dish details">&times;</button>
+    <button class="icon-button modal-close" type="button" data-close-product aria-label="${t('closeDishDetails')}">&times;</button>
     <div class="detail-media">
       <span class="hero-pill">${product.badge}</span>
       ${productVisual(product, 'detail')}
@@ -260,13 +190,13 @@ function openProduct(id) {
       <strong class="detail-price">${money(product.price)}</strong>
       <p>${product.detail}</p>
       <ul>
-        <li>Freshly prepared</li>
-        <li>Available for pickup or delivery</li>
-        <li>Easy to replace with Bayad Pizza real photos later</li>
+        <li>${t('freshlyPrepared')}</li>
+        <li>${t('pickupOrDelivery')}</li>
+        <li>${t('replacePhotos')}</li>
       </ul>
       <div class="detail-actions">
-        <button class="add-button" type="button" data-add="${product.id}" data-close-after-add>Add to order</button>
-        <button class="secondary-link button-reset" type="button" data-close-product>Keep browsing</button>
+        <button class="add-button" type="button" data-add="${product.id}" data-close-after-add>${t('addToOrder')}</button>
+        <button class="secondary-link button-reset" type="button" data-close-product>${t('keepBrowsing')}</button>
       </div>
     </div>
   `;
@@ -280,7 +210,7 @@ function closeProduct() {
 function openCheckout() {
   if (!getCartEntries().length) {
     openCart();
-    showToast('Add at least one dish before checkout');
+    showToast(t('addBeforeCheckout'));
     return;
   }
   closeCart();
@@ -337,7 +267,7 @@ orderForm.addEventListener('submit', (event) => {
   renderCart();
   orderForm.reset();
   orderModal.close();
-  showToast(`Thanks ${name}! Your Bayad Pizza demo order was placed.`);
+  showToast(`${t('thanks')} ${name}! ${t('orderPlaced')}`);
 });
 
 renderHero();
