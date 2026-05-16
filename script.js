@@ -80,11 +80,13 @@ function filteredProducts() {
 }
 
 function renderHero() {
-  const featured = products[0];
-  if (!featured) return;
-  heroProductArt.innerHTML = productVisual(featured, 'hero');
-  heroProductName.textContent = featured.name;
-  heroProductPrice.textContent = money(featured.price);
+  heroProductArt.innerHTML = `
+    <div class="owner-photo-stage">
+      <img class="owner-photo" src="assets/bayad-owner.svg" alt="Bayad Pizza restaurant owner" loading="eager" />
+    </div>
+  `;
+  heroProductName.innerHTML = '<span class="owner-card-label">Bayad Pizza owner</span><span class="owner-card-note">Welcoming every local order</span>';
+  heroProductPrice.textContent = 'Fresh daily';
 }
 
 function renderProducts() {
