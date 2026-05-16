@@ -1,69 +1,69 @@
 const products = [
   {
-    id: 'pulse-headphones',
-    name: 'Pulse Wireless Headphones',
-    category: 'tech',
-    price: 79,
-    badge: 'Best seller',
-    visual: 'headphones',
+    id: 'mixed-grill',
+    name: 'Mixed Grill Plate',
+    category: 'mains',
+    price: 14,
+    badge: 'Chef special',
+    visual: 'grill',
     tone: '#ffe1d3',
-    description: 'Soft ear cushions, clean audio, and all-day battery for studying, gaming, or music.',
-    detail: 'A dependable everyday headset with easy controls, a fold-flat shape, and a balanced sound profile for work, travel, and entertainment.'
+    description: 'Charcoal grilled kebab, chicken, rice, salad, and warm bread.',
+    detail: 'A generous mixed grill plate with seasoned kebab, tender chicken pieces, fluffy rice, fresh salad, pickles, and house sauce.'
   },
   {
-    id: 'daily-backpack',
-    name: 'Daily Carry Backpack',
-    category: 'style',
-    price: 52,
-    badge: 'Everyday',
-    visual: 'backpack',
-    tone: '#dcfce7',
-    description: 'A simple everyday bag with laptop space, side pockets, and a clean streetwear look.',
-    detail: 'Built for school, work, and short trips with a padded laptop pocket, two outer bottle pockets, and a low-profile design.'
-  },
-  {
-    id: 'desk-lamp',
-    name: 'Glow Desk Lamp',
-    category: 'home',
-    price: 34,
-    badge: 'Warm light',
-    visual: 'lamp',
+    id: 'chicken-shawarma',
+    name: 'Chicken Shawarma Wrap',
+    category: 'mains',
+    price: 6,
+    badge: 'Popular',
+    visual: 'wrap',
     tone: '#fef3c7',
-    description: 'Warm light, small footprint, and three brightness modes for work or late-night browsing.',
-    detail: 'A compact desk light with soft diffusion, tap controls, and enough brightness range for reading, calls, and focused work.'
+    description: 'Juicy chicken shawarma wrapped with garlic sauce, pickles, and fries.',
+    detail: 'Thin-sliced chicken shawarma rolled in soft bread with garlic sauce, pickles, crispy fries, and a lightly toasted finish.'
   },
   {
-    id: 'smart-bottle',
-    name: 'Hydro Smart Bottle',
-    category: 'home',
-    price: 28,
-    badge: 'Daily use',
-    visual: 'bottle',
-    tone: '#dbeafe',
-    description: 'A clean stainless bottle made for daily water goals, gym sessions, and travel.',
-    detail: 'Double-wall insulation keeps drinks cold, while the slim shape fits most bags, desks, and car cup holders.'
-  },
-  {
-    id: 'mini-keyboard',
-    name: 'Mini Mechanical Keyboard',
-    category: 'tech',
-    price: 96,
-    badge: 'Premium',
-    visual: 'keyboard',
-    tone: '#ede9fe',
-    description: 'Compact keys, satisfying clicks, and a desk-friendly layout for coding or gaming.',
-    detail: 'A tidy mechanical board with responsive switches, a compact footprint, and a clean layout for focused desk setups.'
-  },
-  {
-    id: 'canvas-hoodie',
-    name: 'Canvas Comfort Hoodie',
-    category: 'style',
-    price: 44,
-    badge: 'Soft feel',
-    visual: 'hoodie',
+    id: 'crispy-burger',
+    name: 'Crispy Chicken Burger',
+    category: 'mains',
+    price: 8,
+    badge: 'Crunchy',
+    visual: 'burger',
     tone: '#fee2e2',
-    description: 'A soft neutral hoodie for everyday outfits, relaxed weekends, and cozy evenings.',
-    detail: 'A mid-weight pullover with a relaxed fit, soft inner fleece, and easy styling for everyday wear.'
+    description: 'Crispy chicken fillet, lettuce, cheese, and house burger sauce.',
+    detail: 'A golden crispy chicken burger layered with cheese, lettuce, tomato, pickles, and our creamy house sauce.'
+  },
+  {
+    id: 'margherita-pizza',
+    name: 'Margherita Pizza',
+    category: 'pizza',
+    price: 10,
+    badge: 'Oven baked',
+    visual: 'pizza',
+    tone: '#dcfce7',
+    description: 'Classic pizza with tomato sauce, mozzarella, basil, and olive oil.',
+    detail: 'A simple oven-baked pizza with rich tomato sauce, melted mozzarella, fresh basil, and a crisp golden crust.'
+  },
+  {
+    id: 'pepperoni-pizza',
+    name: 'Pepperoni Pizza',
+    category: 'pizza',
+    price: 12,
+    badge: 'Hot favorite',
+    visual: 'pizza',
+    tone: '#fde68a',
+    description: 'Mozzarella pizza topped with pepperoni and a rich tomato base.',
+    detail: 'A warm pepperoni pizza with bubbling mozzarella, savory pepperoni slices, tomato sauce, and a crisp crust.'
+  },
+  {
+    id: 'lemon-mint',
+    name: 'Lemon Mint Juice',
+    category: 'drinks',
+    price: 4,
+    badge: 'Fresh',
+    visual: 'drink',
+    tone: '#dbeafe',
+    description: 'Fresh lemon, mint, ice, and a bright sweet finish.',
+    detail: 'A cold lemon mint drink made fresh with crushed ice, bright citrus, mint leaves, and balanced sweetness.'
   }
 ];
 
@@ -83,14 +83,14 @@ const toast = document.getElementById('toast');
 
 let activeFilter = 'all';
 let searchTerm = '';
-let cart = JSON.parse(localStorage.getItem('shopper-cart') || '{}');
+let cart = JSON.parse(localStorage.getItem('restaurant-cart') || '{}');
 
 function money(value) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 }
 
 function saveCart() {
-  localStorage.setItem('shopper-cart', JSON.stringify(cart));
+  localStorage.setItem('restaurant-cart', JSON.stringify(cart));
 }
 
 function getProduct(id) {
@@ -143,7 +143,7 @@ function renderProducts() {
   const visibleProducts = filteredProducts();
 
   if (!visibleProducts.length) {
-    productGrid.innerHTML = '<div class="empty-results">No products match this search. Try another word or clear the filters.</div>';
+    productGrid.innerHTML = '<div class="empty-results">No dishes match this search. Try another word or clear the filters.</div>';
     return;
   }
 
@@ -164,7 +164,7 @@ function renderProducts() {
         <p>${product.description}</p>
         <div class="product-actions">
           <button class="details-button" type="button" data-open-product="${product.id}">View details</button>
-          <button class="add-button" type="button" data-add="${product.id}">Add to cart</button>
+          <button class="add-button" type="button" data-add="${product.id}">Add to order</button>
         </div>
       </div>
     </article>
@@ -181,7 +181,7 @@ function renderCart() {
   modalTotal.textContent = money(subtotal);
 
   if (!entries.length) {
-    cartItems.innerHTML = '<div class="empty-cart">Your cart is empty. Add a product to start a demo order.</div>';
+    cartItems.innerHTML = '<div class="empty-cart">Your order is empty. Add a dish to start.</div>';
     return;
   }
 
@@ -208,7 +208,7 @@ function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
   saveCart();
   renderCart();
-  showToast(`${product.name} added to cart`);
+  showToast(`${product.name} added to order`);
 }
 
 function changeQuantity(id, amount) {
@@ -233,7 +233,7 @@ function openProduct(id) {
   if (!product) return;
 
   productDetail.innerHTML = `
-    <button class="icon-button modal-close" type="button" data-close-product aria-label="Close product details">&times;</button>
+    <button class="icon-button modal-close" type="button" data-close-product aria-label="Close dish details">&times;</button>
     <div class="detail-media">
       <span class="hero-pill">${product.badge}</span>
       ${productVisual(product, 'detail')}
@@ -244,13 +244,13 @@ function openProduct(id) {
       <strong class="detail-price">${money(product.price)}</strong>
       <p>${product.detail}</p>
       <ul>
-        <li>Ready for demo ordering</li>
-        <li>Free test shipping</li>
-        <li>Easy to replace with real product photos</li>
+        <li>Freshly prepared</li>
+        <li>Available for pickup or delivery</li>
+        <li>Easy to replace with real food photos later</li>
       </ul>
       <div class="detail-actions">
-        <button class="add-button" type="button" data-add="${product.id}" data-close-after-add>Add to cart</button>
-        <button class="secondary-link button-reset" type="button" data-close-product>Keep shopping</button>
+        <button class="add-button" type="button" data-add="${product.id}" data-close-after-add>Add to order</button>
+        <button class="secondary-link button-reset" type="button" data-close-product>Keep browsing</button>
       </div>
     </div>
   `;
@@ -264,7 +264,7 @@ function closeProduct() {
 function openCheckout() {
   if (!getCartEntries().length) {
     openCart();
-    showToast('Add at least one product before checkout');
+    showToast('Add at least one dish before checkout');
     return;
   }
   closeCart();
@@ -329,7 +329,7 @@ orderForm.addEventListener('submit', (event) => {
   renderCart();
   orderForm.reset();
   orderModal.close();
-  showToast(`Thanks ${name}! Your demo order was placed.`);
+  showToast(`Thanks ${name}! Your demo restaurant order was placed.`);
 });
 
 renderProducts();
