@@ -1,16 +1,16 @@
 const products = [
   {
-    id: 'mixed-grill',
-    name: 'Mixed Grill Plate',
-    category: 'mains',
+    id: 'fish-rizzo',
+    name: 'Fish with Rizzo',
+    category: 'specials',
     price: 14,
-    badge: 'Chef special',
+    badge: 'Bayad special',
     visual: 'grill',
     tone: '#ffe1d3',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Arabic_MixedGrill.JPG?width=900',
-    imageAlt: 'Arabic mixed grill plate with rice and sides',
-    description: 'Charcoal grilled kebab, chicken, rice, salad, and warm bread.',
-    detail: 'A generous mixed grill plate with seasoned kebab, tender chicken pieces, fluffy rice, fresh salad, pickles, and house sauce.'
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Yellow_rice_full_of_fish_(19827184571).jpg?width=900',
+    imageAlt: 'Fish served with yellow rice',
+    description: 'Tender fish served with yellow rizzo, sauce, lemon, and vegetables.',
+    detail: 'Bayad Pizza special fish with rizzo: tender fish, yellow rice, warm sauce, lemon, vegetables, and a filling restaurant-style portion.'
   },
   {
     id: 'chicken-shawarma',
@@ -96,7 +96,6 @@ const heroProductArt = document.getElementById('heroProductArt');
 const heroProductName = document.getElementById('heroProductName');
 const heroProductPrice = document.getElementById('heroProductPrice');
 
-let activeFilter = 'all';
 let searchTerm = '';
 let cart = JSON.parse(localStorage.getItem('restaurant-cart') || '{}');
 
@@ -147,19 +146,8 @@ function productVisual(product, size = 'card') {
 
 function filteredProducts() {
   return products.filter((product) => {
-    const matchesCategory = activeFilter === 'all' || product.category === activeFilter;
-    const matchesSearch = !searchTerm || `${product.name} ${product.category} ${product.description}`.toLowerCase().includes(searchTerm);
-    return matchesCategory && matchesSearch;
+    return !searchTerm || `${product.name} ${product.description}`.toLowerCase().includes(searchTerm);
   });
-}
-
-function setActiveFilter(filter) {
-  activeFilter = filter;
-  document.querySelectorAll('[data-filter]').forEach((button) => {
-    button.classList.toggle('active', button.dataset.filter === filter);
-  });
-  renderProducts();
-  document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function renderHero() {
@@ -173,7 +161,7 @@ function renderProducts() {
   const visibleProducts = filteredProducts();
 
   if (!visibleProducts.length) {
-    productGrid.innerHTML = '<div class="empty-results">No dishes match this search. Try another word or clear the filters.</div>';
+    productGrid.innerHTML = '<div class="empty-results">No dishes match this search. Try another word.</div>';
     return;
   }
 
@@ -184,7 +172,6 @@ function renderProducts() {
       </button>
       <div class="product-info">
         <div class="product-meta">
-          <span class="category">${product.category}</span>
           <span class="product-badge">${product.badge}</span>
         </div>
         <div class="product-top">
@@ -269,14 +256,13 @@ function openProduct(id) {
       ${productVisual(product, 'detail')}
     </div>
     <div class="detail-copy">
-      <span class="category">${product.category}</span>
       <h2>${product.name}</h2>
       <strong class="detail-price">${money(product.price)}</strong>
       <p>${product.detail}</p>
       <ul>
         <li>Freshly prepared</li>
         <li>Available for pickup or delivery</li>
-        <li>Easy to replace with real food photos later</li>
+        <li>Easy to replace with Bayad Pizza real photos later</li>
       </ul>
       <div class="detail-actions">
         <button class="add-button" type="button" data-add="${product.id}" data-close-after-add>Add to order</button>
@@ -342,14 +328,6 @@ document.addEventListener('click', (event) => {
   if (event.target.dataset.closeProduct !== undefined) closeProduct();
 });
 
-document.querySelectorAll('.filter').forEach((button) => {
-  button.addEventListener('click', () => setActiveFilter(button.dataset.filter));
-});
-
-document.querySelectorAll('.collection-card').forEach((button) => {
-  button.addEventListener('click', () => setActiveFilter(button.dataset.filter));
-});
-
 orderForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const formData = new FormData(orderForm);
@@ -359,7 +337,7 @@ orderForm.addEventListener('submit', (event) => {
   renderCart();
   orderForm.reset();
   orderModal.close();
-  showToast(`Thanks ${name}! Your demo restaurant order was placed.`);
+  showToast(`Thanks ${name}! Your Bayad Pizza demo order was placed.`);
 });
 
 renderHero();
